@@ -168,6 +168,10 @@ private struct GlobeGesturesModifier: ViewModifier {
                         let localRotationSinceStart = simd_quatf(value.convert(rotation: rotationSinceStart, from: .scene, to: .local))
                         let rotation = simd_mul(localRotationSinceStart, localRotationAtGestureStart)
                         
+                        model.activityState.changes[globeEntity.globeId]?.orientation = rotation
+                        model.activityState.changes[globeEntity.globeId]?.position = position
+                        model.activityState.changes[globeEntity.globeId]?.duration = animationDuration
+                        
                         // animate the transformation to reduce jitter, as in the Apple EntityGestures sample project
                         globeEntity.animateTransform(orientation: rotation, position: position, duration: animationDuration)
                     }
@@ -178,7 +182,7 @@ private struct GlobeGesturesModifier: ViewModifier {
                 state.endGesture()
                 
                 if let globeEntity = value.entity as? GlobeEntity {
-                    model.activityState.changes[globeEntity.]?.globeChange = GlobeChange.transform
+                    model.activityState.changes[globeEntity.globeId]?.globeChange = GlobeChange.transform
                     model.sendMessage()
                 }
             }

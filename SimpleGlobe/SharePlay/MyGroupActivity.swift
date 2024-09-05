@@ -29,7 +29,7 @@ class MyGroupActivity: GroupActivityMock {
             metadata.title = "Group activity: Globes Debug"
             metadata.subtitle = "Let's explore together!"
             metadata.sceneAssociationBehavior = .content("planet") // we associate it with a behaviour so we prioritise the content
-            metadata.previewImage = UIImage(resource: .shareplay).cgImage
+//            metadata.previewImage = UIImage(resource: .shareplay).cgImage
             metadata.type = .generic
             return metadata
         }

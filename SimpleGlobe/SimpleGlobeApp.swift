@@ -36,7 +36,7 @@ struct SimpleGlobeApp: App {
     
 #if DEBUG
     init() {
-        SharePlayMockManager.enable(webSocketUrl: "ws://172.20.10.3:8080/endpoint")
+        SharePlayMockManager.enable(webSocketUrl: "ws://118.138.89.168:8080/endpoint")
     }
 #endif
     
