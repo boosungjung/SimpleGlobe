@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2BA7B7E72C8984AA00273EF7 /* SharePlayMock in Frameworks */ = {isa = PBXBuildFile; productRef = 2BA7B7E62C8984AA00273EF7 /* SharePlayMock */; };
+		2BA7B7EE2C89855300273EF7 /* SharePlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7B7EC2C89855300273EF7 /* SharePlayView.swift */; };
+		2BA7B7EF2C89855300273EF7 /* MyGroupActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7B7E92C89855300273EF7 /* MyGroupActivity.swift */; };
+		2BA7B7F02C89855300273EF7 /* ActivityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7B7E82C89855300273EF7 /* ActivityState.swift */; };
+		2BA7B7F12C89855300273EF7 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7B7EA2C89855300273EF7 /* Registration.swift */; };
+		2BA7B7F22C89855300273EF7 /* ViewModel+SharePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7B7EB2C89855300273EF7 /* ViewModel+SharePlay.swift */; };
 		7DD56E572C6CC830009AE72C /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 7DD56E562C6CC830009AE72C /* RealityKitContent */; };
 		7DD56E592C6CC830009AE72C /* SimpleGlobeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD56E582C6CC830009AE72C /* SimpleGlobeApp.swift */; };
 		7DD56E5B2C6CC830009AE72C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD56E5A2C6CC830009AE72C /* ContentView.swift */; };
@@ -35,6 +41,11 @@
 
 /* Begin PBXFileReference section */
 		2B7B62CA2C86A8560027C0AF /* SimpleGlobe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SimpleGlobe.entitlements; sourceTree = "<group>"; };
+		2BA7B7E82C89855300273EF7 /* ActivityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityState.swift; sourceTree = "<group>"; };
+		2BA7B7E92C89855300273EF7 /* MyGroupActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGroupActivity.swift; sourceTree = "<group>"; };
+		2BA7B7EA2C89855300273EF7 /* Registration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
+		2BA7B7EB2C89855300273EF7 /* ViewModel+SharePlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewModel+SharePlay.swift"; sourceTree = "<group>"; };
+		2BA7B7EC2C89855300273EF7 /* SharePlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePlayView.swift; sourceTree = "<group>"; };
 		7DD56E512C6CC830009AE72C /* SimpleGlobe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleGlobe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DD56E552C6CC830009AE72C /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		7DD56E582C6CC830009AE72C /* SimpleGlobeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleGlobeApp.swift; sourceTree = "<group>"; };
@@ -68,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BA7B7E72C8984AA00273EF7 /* SharePlayMock in Frameworks */,
 				7DD56E572C6CC830009AE72C /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,6 +87,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2BA7B7ED2C89855300273EF7 /* SharePlay */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7B7E82C89855300273EF7 /* ActivityState.swift */,
+				2BA7B7E92C89855300273EF7 /* MyGroupActivity.swift */,
+				2BA7B7EA2C89855300273EF7 /* Registration.swift */,
+				2BA7B7EB2C89855300273EF7 /* ViewModel+SharePlay.swift */,
+				2BA7B7EC2C89855300273EF7 /* SharePlayView.swift */,
+			);
+			path = SharePlay;
+			sourceTree = "<group>";
+		};
 		7DD56E482C6CC830009AE72C = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +121,7 @@
 			children = (
 				2B7B62CA2C86A8560027C0AF /* SimpleGlobe.entitlements */,
 				7DD56E582C6CC830009AE72C /* SimpleGlobeApp.swift */,
+				2BA7B7ED2C89855300273EF7 /* SharePlay */,
 				7DD56E6D2C6CC93D009AE72C /* Model */,
 				7DD56E7D2C6CCA71009AE72C /* Entities */,
 				7DD56E752C6CC9EB009AE72C /* Systems & Components */,
@@ -206,6 +231,7 @@
 			name = SimpleGlobe;
 			packageProductDependencies = (
 				7DD56E562C6CC830009AE72C /* RealityKitContent */,
+				2BA7B7E62C8984AA00273EF7 /* SharePlayMock */,
 			);
 			productName = SimpleGlobe;
 			productReference = 7DD56E512C6CC830009AE72C /* SimpleGlobe.app */;
@@ -235,6 +261,9 @@
 				Base,
 			);
 			mainGroup = 7DD56E482C6CC830009AE72C;
+			packageReferences = (
+				2BA7B7E52C8984AA00273EF7 /* XCRemoteSwiftPackageReference "SharePlayMock" */,
+			);
 			productRefGroup = 7DD56E522C6CC830009AE72C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -267,6 +296,11 @@
 				7DD56E7E2C6CCA71009AE72C /* GlobeEntity.swift in Sources */,
 				7DD56E8B2C6CD134009AE72C /* GlobeAttachmentView.swift in Sources */,
 				7DD56E802C6CCA71009AE72C /* ResourceLoader.swift in Sources */,
+				2BA7B7EE2C89855300273EF7 /* SharePlayView.swift in Sources */,
+				2BA7B7EF2C89855300273EF7 /* MyGroupActivity.swift in Sources */,
+				2BA7B7F02C89855300273EF7 /* ActivityState.swift in Sources */,
+				2BA7B7F12C89855300273EF7 /* Registration.swift in Sources */,
+				2BA7B7F22C89855300273EF7 /* ViewModel+SharePlay.swift in Sources */,
 				7DD56E842C6CCB13009AE72C /* Error.swift in Sources */,
 				7DD56E902C6CD1F0009AE72C /* ButtonImage.swift in Sources */,
 				7DD56E5B2C6CC830009AE72C /* ContentView.swift in Sources */,
@@ -486,7 +520,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		2BA7B7E52C8984AA00273EF7 /* XCRemoteSwiftPackageReference "SharePlayMock" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Pixeland-Tech/SharePlayMock";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		2BA7B7E62C8984AA00273EF7 /* SharePlayMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BA7B7E52C8984AA00273EF7 /* XCRemoteSwiftPackageReference "SharePlayMock" */;
+			productName = SharePlayMock;
+		};
 		7DD56E562C6CC830009AE72C /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;

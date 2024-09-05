@@ -13,6 +13,9 @@ import SwiftUI
 /// Gestures mutate the transform of this parent entity, while the optional automatic rotation mutates the transform of the child entity.
 class GlobeEntity: Entity {
     
+    let globeId: Globe.ID
+    
+    
     /// Child model entity
     var modelEntity: Entity? { children.first(where: { $0 is ModelEntity }) }
     
@@ -29,6 +32,7 @@ class GlobeEntity: Entity {
     var animationPlaybackController: AnimationPlaybackController? = nil
     
     @MainActor required init() {
+        self.globeId = UUID()
         super.init()
     }
     
@@ -36,6 +40,8 @@ class GlobeEntity: Entity {
     /// - Parameters:
     ///   - globe: Globe settings.
     init(globe: Globe) async throws {
+        
+        self.globeId = globe.id
         super.init()
         self.name = globe.name
         

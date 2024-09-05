@@ -17,6 +17,7 @@ struct ContentView: View {
         VStack {
             GlobeButton(globe: model.globe)
                 .padding()
+            SharePlayView()
         }
         .padding(50)
     }

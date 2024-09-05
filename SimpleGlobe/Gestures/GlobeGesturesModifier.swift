@@ -1,4 +1,3 @@
-import ARKit
 import os
 import RealityKit
 import SwiftUI
@@ -174,9 +173,14 @@ private struct GlobeGesturesModifier: ViewModifier {
                     }
                 }
             }
-            .onEnded { _ in
+            .onEnded { value in
                 log("end drag")
                 state.endGesture()
+                
+                if let globeEntity = value.entity as? GlobeEntity {
+                    model.activityState.changes[globeEntity.]?.globeChange = GlobeChange.transform
+                    model.sendMessage()
+                }
             }
     }
     
@@ -215,9 +219,13 @@ private struct GlobeGesturesModifier: ViewModifier {
                     }
                 }
             }
-            .onEnded { _ in
+            .onEnded { value in
                 state.endGesture()
                 log("end magnify")
+                
+                if let globeEntity = value.entity as? GlobeEntity {
+                    model.activityState.changes[globeEntity.globeId]?.globeChange = GlobeChange.transform
+                }
             }
     }
     
@@ -271,6 +279,10 @@ private struct GlobeGesturesModifier: ViewModifier {
                 }
                 
                 state.endGesture()
+                
+                if let globeEntity = value.entity as? GlobeEntity {
+                    model.activityState.changes[globeEntity.globeId]?.globeChange = GlobeChange.transform
+                }
             }
     }
     
@@ -343,6 +355,11 @@ private struct GlobeGesturesModifier: ViewModifier {
                     }
                     
                     state.endGesture()
+                    
+                    if let globeEntity = value.entity as? GlobeEntity {
+                        model.activityState.changes[globeEntity.globeId]?.globeChange = GlobeChange.transform
+                    }
+                    
                 default:
                     break
                 }

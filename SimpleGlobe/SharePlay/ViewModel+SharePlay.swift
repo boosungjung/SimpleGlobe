@@ -1,9 +1,3 @@
-//
-//  SharePlay.swift
-//  VisionSharePlayTest
-//
-//  Created by BooSung Jung on 30/7/2024.
-//
 import SwiftUI
 import GroupActivities
 import SharePlayMock
@@ -14,8 +8,8 @@ import Combine
 
 extension ViewModel {
     
- 
-
+    
+    
     func configureGroupSessions(){
         
         Task(priority: .high) {
@@ -43,7 +37,7 @@ extension ViewModel {
                 // sink observes and reacts to changes in the group session activeParticipants
                 groupSession.$activeParticipants
                     .sink {
-            
+                        
                         let newParticipants = $0.subtracting(groupSession.activeParticipants)
                         Task {
                             // if there is a new participant send the activity state to only the new participants
@@ -61,7 +55,13 @@ extension ViewModel {
                 // listen to messages from the group session
                 self.tasks.insert(
                     Task {
-                        for await (message, _) in messenger.messages(of: ActivityState.self) {
+                        for await (message, context) in messenger.messages(of: ActivityState.self) {
+                            let sender = context.source
+                            if sender == groupSession.localParticipant {
+                                // Message from the local participant, we skip
+                                continue
+                            }
+                            //
                             self.receive(message)
                         }
                     }
@@ -130,7 +130,7 @@ extension ViewModel {
     
     
     // MARK: Manual toggle for shareplay
-    func toggleSharePlay() {
+    @MainActor func toggleSharePlay() {
         if (!self.sharePlayEnabled) {
             startSharePlay()
         } else {
@@ -158,10 +158,12 @@ extension ViewModel {
         }
     }
     
+    @MainActor
     func endSharePlay() {
         self.groupSession?.end()
     }
     
+    @MainActor
     func sendMessage() {
         if !sharePlayEnabled{
             return
@@ -170,12 +172,8 @@ extension ViewModel {
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             self.subject.send(self.activityState)
         }
-       
-        // sends the state of activity
-//        Task{
-//            try? await self.messenger?.send(self.activityState)
-//        }
     }
+    
     
     func receive(_ message: ActivityState) {
         if !sharePlayEnabled{
@@ -203,44 +201,37 @@ extension ViewModel {
                     return
                 }
                 switch change.globeChange {
-                    case .load:
-                        if !globeConfiguration.isVisible{ // check if globe is not visible
-                            load(globe: globeConfiguration.globe, openImmersiveSpaceAction: openImmersiveSpaceAction)
-                            activityState.changes[globeID]?.globeChange = GlobeChange.none
-                        }
-                    case .hide:
-                    // we need to check if there is a local configuration. If not, it means the globe does not exist hence already hidden.
-                        guard let localGlobeConfiguration = configurations[globeID] else{
-                            activityState.changes[globeID]?.globeChange = GlobeChange.none
-                            return
-                        }
-                         if localGlobeConfiguration.isVisible {
-                            activityState.sharedGlobeConfiguration.removeValue(forKey: globeID)
-                            hideGlobe(with: globeID)
-                            activityState.changes[globeID]?.globeChange = GlobeChange.none
-                        }
-                    case .transform:
-
-                        if let tempTranslation = self.activityState.changes[globeID] {
-                            let scale = tempTranslation.scale!
-                            let orientation = tempTranslation.orientation!
-                            let position = tempTranslation.position ?? .zero
-                            let duration = tempTranslation.duration ?? 0.2
-                            globeEntities[globeID]?.animateTransform(scale: scale, orientation: orientation, position: position, duration: duration)
-                            activityState.changes[globeID]?.globeChange = GlobeChange.none
-                        }
-                        
-                    case nil:
-                        break
-                    case .some(.none):
-                        break
+                case .load:
+                    if !configuration.isVisible && !configuration.isLoading{ // check if globe is not visible
+                        load(globe: globeConfiguration.globe, openImmersiveSpaceAction: openImmersiveSpaceAction)
+                        activityState.changes[globeID]?.globeChange = GlobeChange.none
+                    }
+                case .hide:
+                    if configuration.isVisible {
+                        //                                activityState.sharedGlobeConfiguration.removeValue(forKey: globeID)
+                        hideGlobe()
+                        activityState.changes[globeID]?.globeChange = GlobeChange.none
+                    }
+                case .transform:
+                    if let tempTranslation = self.activityState.changes[globeID] {
+                        let scale = tempTranslation.scale!
+                        let orientation = tempTranslation.orientation!
+                        let position = tempTranslation.position ?? .zero
+                        let duration = tempTranslation.duration ?? 0.2
+                        globeEntity?.animateTransform(scale: scale,orientation: orientation,position: position, duration: duration)
+                        activityState.changes[globeID]?.globeChange = GlobeChange.none
+                    }
+                case nil:
+                    break
+                case .some(.none):
+                    break
                 }
             }
-        
+            
         }
     }
     
-
+    
     private func cleanupGroupSession() {
         
         sharePlayEnabled = false

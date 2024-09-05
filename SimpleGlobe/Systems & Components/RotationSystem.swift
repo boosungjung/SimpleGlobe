@@ -53,7 +53,6 @@ struct RotationSystem: System {
             
             var scale = entity.scale.sum() / 3
 
-#warning("hack: fix needed")
             if let parent = entity.parent {
                 scale = parent.scale.sum() / 3
             }

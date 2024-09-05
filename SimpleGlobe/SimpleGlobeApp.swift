@@ -7,7 +7,7 @@
 
 import os
 import SwiftUI
-
+import SharePlayMock
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
@@ -24,18 +24,31 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
+
+
 @main
 struct SimpleGlobeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.openURL) private var openURL
-    
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpaceAction
     /// View model injected in environment.
     @State private var model = ViewModel.shared
+    
+#if DEBUG
+    init() {
+        SharePlayMockManager.enable(webSocketUrl: "ws://172.20.10.3:8080/endpoint")
+    }
+#endif
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(model)
+                .onAppear(){
+                    model.openImmersiveSpaceAction = openImmersiveSpaceAction // Pass the openImmersiveSpaceAction to the ViewModel
+                }
+                .task { Registration.registerGroupActivity() }
+
         }
         .windowResizability(.contentSize) // window resizability is derived from window content
 
