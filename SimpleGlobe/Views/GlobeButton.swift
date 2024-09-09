@@ -21,10 +21,17 @@ struct GlobeButton: View {
     
     var body: some View {
         VStack {
+            
             Toggle(isOn: globeBinding, label: {
                 Label("Show Globe", systemImage: "globe")
             })
             .fixedSize(horizontal: true, vertical: false)
+            
+            
+            
+            
+            Text(model.isAnchorPlaced ? "Anchor placed" :"Waiting for anchor")
+            
             
             ProgressView()
                 .opacity(model.configuration.isLoading ? 1 : 0)

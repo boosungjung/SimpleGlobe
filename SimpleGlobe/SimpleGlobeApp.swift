@@ -36,7 +36,7 @@ struct SimpleGlobeApp: App {
     
 #if DEBUG
     init() {
-        SharePlayMockManager.enable(webSocketUrl: "ws://118.138.89.168:8080/endpoint")
+        SharePlayMockManager.enable(webSocketUrl: "ws://192.168.4.80:8080/endpoint")
     }
 #endif
     
@@ -46,6 +46,8 @@ struct SimpleGlobeApp: App {
                 .environment(model)
                 .onAppear(){
                     model.openImmersiveSpaceAction = openImmersiveSpaceAction // Pass the openImmersiveSpaceAction to the ViewModel
+                    model.openImmersiveGlobeSpace(openImmersiveSpaceAction)
+//                    model.loadEntity() // Load the entity on app initialization
                 }
                 .task { Registration.registerGroupActivity() }
 

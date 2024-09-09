@@ -8,10 +8,11 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import Combine
 
 struct ImmersiveView: View {
     @Environment(ViewModel.self) private var model
-    
+    @State private var subscriptions = [EventSubscription]()
     var body: some View {
         RealityView { content, attachments in // async on MainActor
             // Important: Any @State properties initialized in this closure are not available
@@ -21,6 +22,23 @@ struct ImmersiveView: View {
             let root = Entity()
             root.name = "Globes"
             content.add(root)
+            content.add(model.planeEntity)
+           
+            
+            // subscribe to any anchor changes and update the anchor state
+            let anchoredSubscription = content.subscribe(to: SceneEvents.AnchoredStateChanged.self) { event in
+                if let anchoredEntity = event.anchor as? AnchorEntity {
+                    if event.isAnchored {
+                        model.isAnchorPlaced = true
+                    } else {
+                        model.isAnchorPlaced = false
+                    }
+                }
+            }
+            
+            // Store the subscription
+            subscriptions.append(anchoredSubscription)
+            
             
             // initialize the globes
             updateGlobeEntity(to: content, attachments: attachments)
@@ -76,6 +94,8 @@ struct ImmersiveView: View {
                 root.addChild(globeEntity)
             }
         }
+        
+        
         
         // update attachments
         addAttachments(attachments)

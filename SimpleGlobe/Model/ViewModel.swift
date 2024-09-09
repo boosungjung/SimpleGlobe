@@ -23,7 +23,7 @@ import ARKit
 ///
 ///
 /// For the new Observable framework: https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro
-@Observable class ViewModel: CustomDebugStringConvertible {
+@Observable class ViewModel: CustomDebugStringConvertible, ObservableObject {
     
     /// Shared singleton that can be accessed by the AppDelegate.
     @MainActor
@@ -98,6 +98,7 @@ import ARKit
     
     @MainActor
     var cancellable: AnyCancellable?
+
     
     /// Interval in seconds for synchronizing the position of this entity with the camera position
     private let timerInterval: TimeInterval = 0.5
@@ -119,6 +120,7 @@ import ARKit
   
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 Task{ @MainActor in
+                  
                     guard let globeEntity = self.globeEntity else { return }
                     if var activityStateChanges = self.activityState.changes[self.globe.id] {
                         activityStateChanges.scale = globeEntity.scale.x
@@ -145,33 +147,40 @@ import ARKit
         cancellable = subject
             .debounce(for: .seconds(0.1), scheduler: RunLoop.main)
             .sink { activityState in
-                Task{
+                Task {
                     try? await self.messenger?.send(activityState)
                 }
             }
+            
     }
     
-    /// https://gist.github.com/cth400/b3e9dff02d978b0ca9e18557fbc65bf1  image tracking
-    var planeEntity: Entity {
-        // create an anchor entity of minimum bound size of 60 cm by 60cm
+    /// Boolean to check if anchor is placed in scene
+    var isAnchorPlaced = false
+
+//    /// https://gist.github.com/cth400/b3e9dff02d978b0ca9e18557fbc65bf1  image tracking
+    var planeEntity: AnchorEntity {
         let floorAnchor = AnchorEntity(.plane(.horizontal,
                                               classification: .floor,
                                               minimumBounds: SIMD2<Float>(0.6, 0.6)))
-        floorAnchor.synchronization = SynchronizationComponent()
-
-//        let floorAnchor = AnchorEntity(.image(group: "AR Resources",
-//                                                  name: "image.png"))
- 
         
+        // https://developer.apple.com/documentation/realitykit/entity/synchronization
+        floorAnchor.synchronization = SynchronizationComponent()
+        
+        
+        //        let floorAnchor = AnchorEntity(.image(group: "AR Resources",
+        //                                                  name: "image.png"))
         let planeMesh = MeshResource.generatePlane(width: 1, height: 1, cornerRadius: 0.1)
         let material = SimpleMaterial(color: .green, isMetallic: false)
         let planeEntity = ModelEntity(mesh: planeMesh, materials: [material])
         planeEntity.name = "canvas"
         floorAnchor.addChild(planeEntity)
         
+        
+        
+        
         return floorAnchor
     }
-   
+
   
     @MainActor
     /// Open an immersive space if there is none and show a globe. Once loaded, the globe fades in.
@@ -274,7 +283,7 @@ import ARKit
     var immersiveSpaceIsShown = false
 
     @MainActor
-    private func openImmersiveGlobeSpace(_ action: OpenImmersiveSpaceAction) {
+    func openImmersiveGlobeSpace(_ action: OpenImmersiveSpaceAction) {
         guard !immersiveSpaceIsShown else { return }
         Task {
             let result = await action(id: "ImmersiveGlobeSpace")
