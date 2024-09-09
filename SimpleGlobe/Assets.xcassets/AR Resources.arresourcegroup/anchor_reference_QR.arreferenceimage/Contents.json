@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "anchor_reference_QR.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "width" : 0.042999999999999997
+  }
+}
